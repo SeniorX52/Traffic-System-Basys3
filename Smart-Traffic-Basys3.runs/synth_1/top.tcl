@@ -18,7 +18,6 @@ proc create_report { reportName command } {
   }
 }
 set_param chipscope.maxJobs 3
-set_param xicom.use_bs_reader 1
 create_project -in_memory -part xc7a35tcpg236-1
 
 set_param project.singleFileAddWarning.threshold 0
@@ -33,6 +32,9 @@ set_property ip_output_repo c:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/S
 set_property ip_cache_permissions {read write} [current_project]
 read_vhdl -library xil_defaultlib {
   C:/Users/study/Documents/VHDL/lcd/lcd.srcs/sources_1/new/lcd.vhd
+  C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.srcs/sources_1/new/multi_ultrasonic.vhd
+  C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.srcs/sources_1/new/traffic.vhd
+  C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.srcs/sources_1/new/ultrasonic.vhd
   C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.srcs/sources_1/new/top.vhd
 }
 # Mark all dcp files as not used in implementation to prevent them from being

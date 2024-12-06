@@ -63,3 +63,5 @@ set_property src_info {type:XDC file:1 line:314 export:INPUT save:INPUT read:REA
 set_property PACKAGE_PIN A16 [get_ports lcd_rw]
 set_property src_info {type:XDC file:1 line:315 export:INPUT save:INPUT read:READ} [current_design]
 set_property PACKAGE_PIN B15 [get_ports lcd_rs]
+set_property src_info {type:XDC file:1 line:317 export:INPUT save:INPUT read:READ} [current_design]
+set_property IOSTANDARD LVCMOS33 [get_ports echo]
