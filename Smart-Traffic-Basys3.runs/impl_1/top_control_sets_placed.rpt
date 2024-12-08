@@ -1,0 +1,97 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (win64) Build 2552052 Fri May 24 14:49:42 MDT 2019
+| Date         : Sun Dec  8 10:01:01 2024
+| Host         : DESKTOP-ENIGP0C running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file top_control_sets_placed.rpt
+| Design       : top
+| Device       : xc7a35t
+------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    19 |
+|    Minimum number of control sets                        |    19 |
+|    Addition due to synthesis replication                 |     0 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    56 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    19 |
+| >= 0 to < 4        |     5 |
+| >= 4 to < 6        |     0 |
+| >= 6 to < 8        |     1 |
+| >= 8 to < 10       |     1 |
+| >= 10 to < 12      |     0 |
+| >= 12 to < 14      |     3 |
+| >= 14 to < 16      |     1 |
+| >= 16              |     8 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              14 |            8 |
+| No           | No                    | Yes                    |              38 |            8 |
+| No           | Yes                   | No                     |               0 |            0 |
+| Yes          | No                    | No                     |             108 |           41 |
+| Yes          | No                    | Yes                    |               0 |            0 |
+| Yes          | Yes                   | No                     |             128 |           35 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++----------------+------------------------------------------------------------+------------------------------------------------------+------------------+----------------+
+|  Clock Signal  |                        Enable Signal                       |                   Set/Reset Signal                   | Slice Load Count | Bel Load Count |
++----------------+------------------------------------------------------------+------------------------------------------------------+------------------+----------------+
+|  clk_IBUF_BUFG | lcd_inst/en0                                               |                                                      |                1 |              1 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B1/FSM_onehot_state_reg_n_0_[0] |                                                      |                1 |              1 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A1/FSM_onehot_state_reg_n_0_[0] |                                                      |                1 |              1 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A2/FSM_onehot_state_reg_n_0_[0] |                                                      |                1 |              1 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B2/FSM_onehot_state_reg_n_0_[0] |                                                      |                1 |              1 |
+|  clk_IBUF_BUFG | lcd_inst/rs_i_1_n_0                                        |                                                      |                4 |              6 |
+|  clk_IBUF_BUFG | lcd_inst/input_buffer0                                     |                                                      |                2 |              8 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B1/distance[12]_inv_i_1__1_n_0  |                                                      |                5 |             13 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A1/distance[12]_inv_i_1_n_0     |                                                      |                5 |             13 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A2/distance[12]_inv_i_1__0_n_0  |                                                      |                5 |             13 |
+|  clk_IBUF_BUFG |                                                            |                                                      |                8 |             14 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B2/distance[12]_i_1_n_0         |                                                      |                7 |             20 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B1/counter0                     | ultrasonic_inst/ultrasonic_B1/counter[23]_i_1__3_n_0 |                7 |             24 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A1/counter0                     | ultrasonic_inst/ultrasonic_A1/counter[23]_i_1__1_n_0 |                7 |             24 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_A2/counter0                     | ultrasonic_inst/ultrasonic_A2/counter[23]_i_1__2_n_0 |                7 |             24 |
+|  clk_IBUF_BUFG | ultrasonic_inst/ultrasonic_B2/counter0                     | ultrasonic_inst/ultrasonic_B2/counter[23]_i_1__4_n_0 |                7 |             24 |
+|  clk_IBUF_BUFG | lcd_inst/index0                                            |                                                      |                8 |             30 |
+|  clk_IBUF_BUFG | lcd_inst/p_0_in                                            | lcd_inst/counter[31]_i_1__0_n_0                      |                7 |             32 |
+|  clk_IBUF_BUFG |                                                            | reset_IBUF                                           |                8 |             38 |
++----------------+------------------------------------------------------------+------------------------------------------------------+------------------+----------------+
+
+

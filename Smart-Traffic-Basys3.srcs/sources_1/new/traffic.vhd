@@ -27,8 +27,8 @@ entity traffic is
 Port(
         clk      : in std_logic;                           -- Clock input
         rst      : in std_logic;                           -- Reset signal
-        Lane_A_Left_LEDs: out std_logic_vector (1 downto 0); -- Left turn LEDs for Lane A (RED, GREEN)
-        Lane_B_Left_LEDs: out std_logic_vector (1 downto 0); -- Left turn LEDs for Lane B (RED, GREEN)
+        Lane_A_Left_LEDs: out std_logic; -- Left turn LEDs for Lane A (RED, GREEN)
+        Lane_B_Left_LEDs: out std_logic; -- Left turn LEDs for Lane B (RED, GREEN)
         Lane_A_LEDs: out std_logic_vector (2 downto 0);    -- Traffic LEDs for Lane A (RED, YELLOW, GREEN)
         Lane_B_LEDs: out std_logic_vector (2 downto 0);    -- Traffic LEDs for Lane B (RED, YELLOW, GREEN)
         common_bus: inout std_logic_vector (63 downto 0)   -- Shared communication bus
@@ -94,8 +94,8 @@ begin
     begin
         -- Default output values
         nextState <= currentState;
-        Lane_A_Left_LEDs <= "10"; -- Default: Lane A left turn RED
-        Lane_B_Left_LEDs <= "10"; -- Default: Lane B left turn RED
+        Lane_A_Left_LEDs <= '0'; -- Default: Lane A left turn RED
+        Lane_B_Left_LEDs <= '0'; -- Default: Lane B left turn RED
 
         case currentState is
             when LANE_A =>
@@ -104,18 +104,18 @@ begin
                 common_bus(47 downto 46) <= "01"; -- Indicate Lane A active
                 Lane_B_LEDs <= "100"; -- RED
                 if counter = GREEN_TIME - 1 then
-                    nextState <= LEFT_A; -- Move to left turn for Lane A
+                    nextState <= A_TO_B; -- Move to left turn for Lane A
                 end if;
 
             when LEFT_A =>
                 -- Lane A left turn green, Lane B is red
                 Lane_A_LEDs <= "100"; -- RED
                 Lane_B_LEDs <= "100"; -- RED
-                common_bus(47 downto 46) <= "11"; -- Indicate both lanes inactive
-                Lane_A_Left_LEDs <= "01"; -- GREEN for left turn
-                Lane_B_Left_LEDs <= "10"; -- RED for left turn
+               common_bus(47 downto 46) <= "11"; -- Indicate both lanes inactive
+                Lane_A_Left_LEDs <= '1'; -- GREEN for left turn
+                Lane_B_Left_LEDs <= '0'; -- RED for left turn
                 if counter = LEFT_TIME - 1 then
-                    nextState <= A_TO_B; -- Move to yellow light transition
+                    nextState <= LANE_B; -- Move to yellow light transition
                 end if;
 
             when A_TO_B =>
@@ -124,36 +124,36 @@ begin
                 Lane_B_LEDs <= "010"; -- YELLOW
                 common_bus(47 downto 46) <= "00"; -- Indicate no active lane
                 if counter = YELLOW_TIME - 1 then
-                    nextState <= LANE_B; -- Move to green light for Lane B
+                    nextState <= LEFT_A; -- Move to green light for Lane B
                 end if;
 
             when LANE_B =>
                 -- Lane B has a green light, Lane A is red
                 Lane_B_LEDs <= "001"; -- GREEN
                 Lane_A_LEDs <= "100"; -- RED
-                common_bus(47 downto 46) <= "10"; -- Indicate Lane B active
+               common_bus(47 downto 46) <= "10"; -- Indicate Lane B active
                 if counter = GREEN_TIME - 1 then
-                    nextState <= LEFT_B; -- Move to left turn for Lane B
+                    nextState <= B_TO_A; -- Move to left turn for Lane B
                 end if;
 
             when LEFT_B =>
                 -- Lane B left turn green, Lane A is red
                 Lane_A_LEDs <= "100"; -- RED
                 Lane_B_LEDs <= "100"; -- RED
-                Lane_A_Left_LEDs <= "10"; -- RED for left turn
-                Lane_B_Left_LEDs <= "01"; -- GREEN for left turn
-                common_bus(47 downto 46) <= "11"; -- Indicate both lanes inactive
+                Lane_A_Left_LEDs <= '0'; -- RED for left turn
+                Lane_B_Left_LEDs <= '1'; -- GREEN for left turn
+               common_bus(47 downto 46) <= "11"; -- Indicate both lanes inactive
                 if counter = LEFT_TIME - 1 then
-                    nextState <= B_TO_A; -- Move to yellow light transition
+                    nextState <= LANE_A; -- Move to yellow light transition
                 end if;
 
             when B_TO_A =>
                 -- Yellow light transition from Lane B to Lane A
                 Lane_A_LEDs <= "010"; -- YELLOW
                 Lane_B_LEDs <= "010"; -- YELLOW
-                common_bus(47 downto 46) <= "00"; -- Indicate no active lane
+              common_bus(47 downto 46) <= "00"; -- Indicate no active lane
                 if counter = YELLOW_TIME - 1 then
-                    nextState <= LANE_A; -- Move to green light for Lane A
+                    nextState <= LEFT_B; -- Move to green light for Lane A
                 end if;
         end case;
     end process;

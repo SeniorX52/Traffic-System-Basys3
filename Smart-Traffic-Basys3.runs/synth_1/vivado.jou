@@ -2,11 +2,11 @@
 # Vivado v2019.1 (64-bit)
 # SW Build 2552052 on Fri May 24 14:49:42 MDT 2019
 # IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
-# Start of session at: Sat Dec  7 01:49:58 2024
-# Process ID: 46984
-# Current directory: C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1
+# Start of session at: Sun Dec  8 14:55:58 2024
+# Process ID: 11628
+# Current directory: C:/Users/Opal/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1
 # Command line: vivado.exe -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
-# Log file: C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1/top.vds
-# Journal file: C:/Users/study/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1\vivado.jou
+# Log file: C:/Users/Opal/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1/top.vds
+# Journal file: C:/Users/Opal/Documents/VHDL/Smart-Traffic-Basys3/Smart-Traffic-Basys3.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source top.tcl -notrace

@@ -33,10 +33,14 @@ entity top is
         echo_A2           : in std_logic;                     -- Echo signal from sensor A2
         echo_B1           : in std_logic;                     -- Echo signal from sensor B1
         echo_B2           : in std_logic;                     -- Echo signal from sensor B2
-        trigger           : out std_logic;                    -- Trigger signal for ultrasonic sensors
+        dht_data    : inout std_logic;
+        trigger_A1  : out std_logic;
+        trigger_A2  : out std_logic;
+        trigger_B1  : out std_logic;
+        trigger_B2  : out std_logic;
         buzzer            : out std_logic;                    -- Buzzer output
-        Lane_A_Left_LEDs  : out std_logic_vector(1 downto 0); -- Left Turn LEDs for Lane A (RED, GREEN)
-        Lane_B_Left_LEDs  : out std_logic_vector(1 downto 0); -- Left Turn LEDs for Lane B (RED, GREEN)
+        Lane_A_Left_LEDs  :out std_logic; 
+        Lane_B_Left_LEDs  : out std_logic;
         Lane_A_LEDs       : out std_logic_vector(2 downto 0); -- Traffic LEDs for Lane A (RED, YELLOW, GREEN)
         Lane_B_LEDs       : out std_logic_vector(2 downto 0)  -- Traffic LEDs for Lane B (RED, YELLOW, GREEN)
     );
@@ -66,18 +70,30 @@ architecture Structural of top is
             echo_A2     : in std_logic;                        -- Echo signal from sensor A2
             echo_B1     : in std_logic;                        -- Echo signal from sensor B1
             echo_B2     : in std_logic;                        -- Echo signal from sensor B2
-            trigger     : out std_logic;                       -- Trigger signal to sensors
+            trigger_A1  : out std_logic;
+            trigger_A2  : out std_logic;
+            trigger_B1  : out std_logic;
+            trigger_B2  : out std_logic;
             buzzer      : out std_logic;                       -- Buzzer signal
             common_bus  : inout std_logic_vector(63 downto 0)
         );
     end component;
+    
+    component DHT11_sensor is
+        port(
+            clk         : in std_logic;
+            dht_data: inout std_logic;
+            common_bus: inout std_logic_vector(63 downto 0)
+        );
+     end component;
+
 
     component traffic is
         port(
             clk               : in std_logic;
             rst               : in std_logic;
-            Lane_A_Left_LEDs  : out std_logic_vector(1 downto 0); -- Left Turn LEDs for Lane A (RED, GREEN)
-            Lane_B_Left_LEDs  : out std_logic_vector(1 downto 0); -- Left Turn LEDs for Lane B (RED, GREEN)
+            Lane_A_Left_LEDs  : out std_logic; -- Left Turn LEDs for Lane A (RED, GREEN)
+            Lane_B_Left_LEDs  : out std_logic;-- Left Turn LEDs for Lane B (RED, GREEN)
             Lane_A_LEDs       : out std_logic_vector(2 downto 0); -- Traffic LEDs for Lane A (RED, YELLOW, GREEN)
             Lane_B_LEDs       : out std_logic_vector(2 downto 0); -- Traffic LEDs for Lane B (RED, YELLOW, GREEN)
             common_bus        : inout std_logic_vector(63 downto 0) -- Shared communication bus
@@ -106,11 +122,19 @@ begin
             echo_A2     => echo_A2,
             echo_B1     => echo_B1,
             echo_B2     => echo_B2,
-            trigger     => trigger,
+            trigger_A1  => trigger_A1,
+            trigger_A2  => trigger_A2,
+            trigger_B1  => trigger_B1,
+            trigger_B2  => trigger_B2,
             buzzer      => buzzer,
             common_bus  => common_bus
         );
-
+    Dht_inst: DHT11_sensor
+        port map(
+            clk         => clk,
+            dht_data    => dht_data,
+            common_bus  => common_bus
+        );
     -- Instantiate the Traffic component
     traffic_inst: traffic
         port map(

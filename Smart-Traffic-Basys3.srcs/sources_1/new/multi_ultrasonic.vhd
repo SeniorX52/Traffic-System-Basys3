@@ -10,7 +10,10 @@ entity multi_ultrasonic is
         echo_A2     : in  STD_LOGIC;                        -- Echo signal from sensor A2
         echo_B1     : in  STD_LOGIC;                        -- Echo signal from sensor B1
         echo_B2     : in  STD_LOGIC;                        -- Echo signal from sensor B2
-        trigger     : out std_logic;
+        trigger_A1  : out std_logic;
+        trigger_A2  : out std_logic;
+        trigger_B1  : out std_logic;
+        trigger_B2  : out std_logic;
         common_bus  : inout STD_LOGIC_VECTOR(63 downto 0);  -- Shared data bus
         buzzer      : out std_logic                         -- Buzzer output
     );
@@ -26,9 +29,11 @@ architecture Behavioral of multi_ultrasonic is
     constant delay_us:integer:=100;
     -- Constants and internal signals
     signal counter      : integer := 0;
+    signal inner_trigger : std_logic;
     signal trig_counter      : integer := 0;
-    constant alert_distance : integer := 20;
+    constant alert_distance : integer := 5;
     constant clk_freq       : integer := 100_000_000;
+    signal common_bus2  : STD_LOGIC_VECTOR(63 downto 0);
 
     signal Lane_A_Red : std_logic;
     signal Lane_B_Red : std_logic;
@@ -40,6 +45,7 @@ architecture Behavioral of multi_ultrasonic is
             rst         : in  STD_LOGIC;                  -- Reset signal
             echo        : in  STD_LOGIC;                  -- Echo signal from sensor
             distance    : out STD_LOGIC_VECTOR(23 downto 0); -- Distance output
+            trigger     : out std_logic;
             common_bus  : inout STD_LOGIC_VECTOR(63 downto 0) -- Shared data bus
         );
     end component;
@@ -52,6 +58,7 @@ begin
             rst       => rst,
             echo      => echo_A1,
             distance  => distance_A1,
+            trigger=> trigger_A1,
             common_bus => common_bus
         );
 
@@ -62,7 +69,8 @@ begin
             rst       => rst,
             echo      => echo_A2,
             distance  => distance_A2,
-            common_bus => common_bus
+            trigger=> trigger_A2,
+            common_bus => common_bus2
         );
 
     -- Instantiate Ultrasonic Component for B1
@@ -72,7 +80,8 @@ begin
             rst       => rst,
             echo      => echo_B1,
             distance  => distance_B1,
-            common_bus => common_bus
+            trigger=> trigger_B1,
+            common_bus => common_bus2
         );
 
     -- Instantiate Ultrasonic Component for B2
@@ -82,7 +91,8 @@ begin
             rst       => rst,
             echo      => echo_B2,
             distance  => distance_B2,
-            common_bus => common_bus
+            trigger=> trigger_B2,
+            common_bus => common_bus2
         );
 
     -- Distance checking process
@@ -97,8 +107,9 @@ begin
             distanceA2 := to_integer(unsigned(distance_A2));
             distanceB1 := to_integer(unsigned(distance_B1));
             distanceB2 := to_integer(unsigned(distance_B2));
-
-            if Lane_A_Red = '1' and (distanceA1 < alert_distance or distanceA2 < alert_distance) then
+            if Lane_A_Red = '1' and Lane_B_Red = '1' then
+                common_bus(45) <= '0';
+            elsif Lane_A_Red = '1' and (distanceA1 < alert_distance or distanceA2 < alert_distance) then
                 common_bus(45) <= '1';
             elsif Lane_B_Red = '1' and (distanceB1 < alert_distance or distanceB2 < alert_distance) then
                 common_bus(45) <= '1';
@@ -108,34 +119,14 @@ begin
         end if;
     end process;
     
-    process (clk) 
-    begin
-        if rising_edge(clk) then
-            if(trig_counter<10*delay_us) then
-                trigger<='1';
-                trig_counter<=trig_counter+1;
-            elsif (trig_counter<(10*delay_us+100*delay_ms)) then
-                trigger<='0';
-                trig_counter<=trig_counter+1;
-            else
-                trig_counter<=0;
-            end if;
-        end if;
-    
-    end process;
-
     -- Buzzer control
     process (clk)
     begin
         if rising_edge(clk) then
-            if common_bus(45) = '1' then
-                if counter < 2 * clk_freq then   -- 2 seconds
-                    buzzer <= '1';
-                    counter <= counter + 1;
-                else
-                    buzzer <= '0';
-                    counter <= 0;
-                end if;
+            if common_bus(45)='1' then   -- 2 seconds
+                buzzer <= '1';
+            else
+                buzzer <= '0';
             end if;
         end if;
     end process;
