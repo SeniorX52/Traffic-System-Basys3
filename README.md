@@ -1,9 +1,10 @@
 # Smart Traffic-System-Basys3
 This project is a **Smart Traffic Management System** developed using **VHDL** and implemented on a **Basys 3 FPGA board**. The purpose of this project is to optimize traffic flow and enhance safety by integrating advanced monitoring and control features. 
 
-![System Diagram](![image](https://github.com/user-attachments/assets/6518a0fb-c4a2-4955-a72f-e0f83b5f7912))
-![System Diagram](![image](https://github.com/user-attachments/assets/be730d00-fa47-43d1-a8b1-bcf59a918199))
-![System Diagram](![image](https://github.com/user-attachments/assets/060d7ad9-bf1c-47c7-8e5b-c1177070f244))
+![image](https://github.com/user-attachments/assets/6518a0fb-c4a2-4955-a72f-e0f83b5f7912)
+![image](https://github.com/user-attachments/assets/be730d00-fa47-43d1-a8b1-bcf59a918199)
+![image](https://github.com/user-attachments/assets/060d7ad9-bf1c-47c7-8e5b-c1177070f244)
+
 ## Features
 
 ### Traffic Light System
